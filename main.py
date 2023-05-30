@@ -2,9 +2,9 @@ import win32gui, win32con, win32ui
 import numpy as np
 import cv2 as cv
 
-def windowCapture():
-    w = 330
-    h = 316
+def screenImg():
+    w = 330 #Minimap width
+    h = 316 #Minimap height
     
     hwnd = win32gui.FindWindow(None, 'winnable')
 
@@ -14,7 +14,7 @@ def windowCapture():
     dataBitMap = win32ui.CreateBitmap()
     dataBitMap.CreateCompatibleBitmap(dcObj, w, h)
     cDC.SelectObject(dataBitMap)
-    cDC.BitBlt((0, 0), (w, h), dcObj, (1570, 740), win32con.SRCCOPY)
+    cDC.BitBlt((0, 0), (w, h), dcObj, (1570, 740), win32con.SRCCOPY) #(1570, 740) = top left corner of minimap
 
     signedIntsArray = dataBitMap.GetBitmapBits(True)
     img = np.frombuffer(signedIntsArray, dtype='uint8')
@@ -31,6 +31,6 @@ def windowCapture():
 
 
 while True:
-    image = cv.resize(windowCapture(),(330*3,316*3))
+    image = cv.resize(screenImg(),(330*3,316*3)) #Resize minimap to 3x size
     cv.imshow('Minimap', image)
     cv.waitKey(1)
